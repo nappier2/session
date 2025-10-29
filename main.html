@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="NAPPIER-XMD WhatsApp Bot - Powered by Michal-Tech" />
+  <title>NAPPIER-XMD | Session Generator</title>
+
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@500;700&family=JetBrains+Mono:wght@300;400;600&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+  <style>
+    :root {
+      --primary: linear-gradient(135deg, #ff00c8, #00c3ff);
+      --bg: #000;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #fff;
+      --muted: #00c3ff;
+      --highlight: #ff00c8;
+      --radius: 16px;
+      --blur: 12px;
+      --transition: 0.3s ease;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'JetBrains Mono', monospace;
+      background: var(--bg);
+      color: var(--text);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1.5rem 3rem;
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+    }
+
+    .logo {
+      font-family: 'Orbitron', sans-serif;
+      font-size: 2rem;
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .status {
+      display: flex;
+      gap: 1rem;
+    }
+
+    .status-item {
+      background: rgba(255, 255, 255, 0.05);
+      padding: 0.6rem 1.2rem;
+      border-radius: 30px;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+
+    .status-item i {
+      color: var(--highlight);
+    }
+
+    main {
+      flex: 1;
+      padding: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2.5rem;
+    }
+
+    .tools {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 2rem;
+      width: 100%;
+      max-width: 1100px;
+    }
+
+    .tool {
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+      transition: var(--transition);
+    }
+
+    .tool:hover {
+      transform: translateY(-8px);
+      border-color: var(--highlight);
+      box-shadow: 0 0 20px rgba(255, 0, 200, 0.3);
+    }
+
+    .tool i {
+      font-size: 2.5rem;
+      margin-bottom: 1rem;
+      color: var(--highlight);
+    }
+
+    .tool h3 {
+      font-family: 'Orbitron', sans-serif;
+      margin-bottom: 0.5rem;
+      color: #fff;
+    }
+
+    .muted {
+      color: var(--muted);
+      font-size: 0.9rem;
+    }
+
+    .note {
+      text-align: center;
+      color: var(--muted);
+      background: rgba(255, 255, 255, 0.05);
+      padding: 1rem;
+      border-radius: var(--radius);
+      max-width: 700px;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .note a {
+      color: var(--highlight);
+      text-decoration: none;
+      font-weight: bold;
+    }
+
+    footer {
+      padding: 1rem;
+      text-align: center;
+      background: rgba(255, 255, 255, 0.05);
+      font-size: 0.85rem;
+      color: var(--muted);
+      border-top: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    footer a {
+      color: var(--highlight);
+      text-decoration: none;
+    }
+
+    @media (max-width: 768px) {
+      header {
+        flex-direction: column;
+        gap: 1rem;
+      }
+      main {
+        padding: 2rem 1rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="logo">NAPPIER-XMD</div>
+    <div class="status">
+      <div class="status-item"><i class="fas fa-bolt"></i> <span id="battery">--%</span></div>
+      <div class="status-item"><i class="fas fa-wifi"></i> <span id="ip">Loading...</span></div>
+    </div>
+  </header>
+
+  <main>
+    <div class="tools">
+      <div class="tool" onclick="window.open('/pair')">
+        <i class="fas fa-link"></i>
+        <h3>PAIR CODE</h3>
+        <p class="muted">Generate a pairing code to connect NAPPIER-XMD to WhatsApp</p>
+      </div>
+
+      <div class="tool" onclick="window.open('https://github.com/hacker-nap/NAPPIER-XMD')">
+        <i class="fab fa-github"></i>
+        <h3>GitHub Repository</h3>
+        <p class="muted">Open the official NAPPIER-XMD source code</p>
+      </div>
+
+      <div class="tool" onclick="window.open('https://whatsapp.com/channel/0029VbBRLb04dTnRzJI0781D')">
+        <i class="fas fa-broadcast-tower"></i>
+        <h3>WhatsApp Channel</h3>
+        <p class="muted">Get all bot updates and announcements</p>
+      </div>
+
+      <div class="tool" onclick="window.open('https://wa.me/254104260236?text=Hello+Michal-Tech,+I+need+help+with+NAPPIER-XMD')">
+        <i class="fas fa-headset"></i>
+        <h3>Contact Developer</h3>
+        <p class="muted">Talk directly with Michal-Tech for support</p>
+      </div>
+    </div>
+
+    <div class="note">
+      💬 Need help or updates? Join our <a href="https://whatsapp.com/channel/0029VbBRLb04dTnRzJI0781D" target="_blank">official WhatsApp channel</a> for the latest info and scripts.
+    </div>
+  </main>
+
+  <footer>
+    Designed & Developed by <a href="https://github.com/hacker-nap" target="_blank">Kathara / Michal-Tech</a> © 2025
+  </footer>
+
+  <script>
+    // Battery Status
+    navigator.getBattery?.().then(battery => {
+      const update = () => {
+        document.getElementById('battery').textContent = Math.round(battery.level * 100) + '%';
+      };
+      update();
+      battery.addEventListener('levelchange', update);
+    });
+
+    // Fetch IP
+    fetch('https://api.ipify.org?format=json')
+      .then(res => res.json())
+      .then(data => document.getElementById('ip').textContent = data.ip)
+      .catch(() => document.getElementById('ip').textContent = 'Offline');
+  </script>
+</body>
+</html>

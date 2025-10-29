@@ -1,0 +1,410 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>NAPPIER-XMD | Pairing Dashboard</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css" />
+  <style>
+    :root {
+      --primary: linear-gradient(135deg, #00b4d8, #8b5cf6, #ff3c3c);
+      --bg: #000;
+      --glass: rgba(255, 255, 255, 0.05);
+      --text: #ffffff;
+      --muted: #a0a0a0;
+      --highlight: #00b4d8;
+      --radius: 16px;
+      --blur: 14px;
+      --transition: 0.3s ease;
+      --glow: 0 0 20px rgba(0, 180, 216, 0.4);
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      color: var(--text);
+      background: radial-gradient(circle at top, #0a0a0a, #000);
+      overflow-x: hidden;
+      padding: 80px 20px 120px;
+    }
+
+    .background-image {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      z-index: -3;
+      filter: blur(8px) brightness(0.4);
+    }
+
+    .header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      z-index: 100;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logo-container {
+      display: flex;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .logo-img {
+      height: 45px;
+      width: 45px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 2px solid var(--highlight);
+      box-shadow: var(--glow);
+    }
+
+    .logo-text {
+      font-size: 1.5rem;
+      font-weight: 700;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      text-shadow: var(--glow);
+    }
+
+    .battery-container {
+      background: rgba(0, 0, 0, 0.3);
+      border-radius: 50px;
+      padding: 0.4rem 1rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
+    }
+
+    .battery-icon {
+      color: var(--highlight);
+      font-size: 1.2rem;
+    }
+
+    .main-content {
+      width: 100%;
+      max-width: 480px;
+      display: flex;
+      flex-direction: column;
+      gap: 2rem;
+      z-index: 1;
+    }
+
+    .box {
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      padding: 2rem;
+      text-align: center;
+      box-shadow: 0 10px 35px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      transition: var(--transition);
+    }
+
+    .box:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), var(--glow);
+    }
+
+    .box h2 {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      background: var(--primary);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+
+    .box h5 {
+      color: var(--muted);
+      margin-bottom: 1rem;
+    }
+
+    .input-container {
+      display: flex;
+      gap: 0.6rem;
+      margin-bottom: 1.3rem;
+    }
+
+    .input-container input {
+      flex: 1;
+      padding: 1rem;
+      border-radius: var(--radius);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      background: rgba(0, 0, 0, 0.4);
+      color: var(--text);
+      font-size: 1rem;
+    }
+
+    .input-container input:focus {
+      outline: none;
+      border-color: var(--highlight);
+      box-shadow: 0 0 10px rgba(0, 180, 216, 0.3);
+    }
+
+    .input-container button {
+      padding: 1rem 1.3rem;
+      background: var(--primary);
+      color: white;
+      border: none;
+      border-radius: var(--radius);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .input-container button:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--glow);
+    }
+
+    #pair-result {
+      margin-top: 1rem;
+      padding: 1rem;
+      border-radius: var(--radius);
+      background: rgba(0, 0, 0, 0.4);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      min-height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #copy-code {
+      background: rgba(0, 0, 0, 0.3);
+      border: 1px solid var(--highlight);
+      padding: 0.6rem 1.2rem;
+      border-radius: 50px;
+      color: white;
+      cursor: pointer;
+      font-weight: 600;
+      margin-top: 1rem;
+      display: none;
+      transition: var(--transition);
+    }
+
+    #copy-code:hover {
+      background: rgba(0, 180, 216, 0.1);
+      box-shadow: var(--glow);
+    }
+
+    .music-player {
+      width: 100%;
+      max-width: 480px;
+      background: var(--glass);
+      backdrop-filter: blur(var(--blur));
+      border-radius: var(--radius);
+      padding: 1.5rem;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+      border: 1px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+    }
+
+    .music-player h3 {
+      color: var(--highlight);
+      margin-bottom: 0.5rem;
+    }
+
+    .music-title {
+      font-weight: bold;
+      font-size: 1.1rem;
+      margin-bottom: 0.3rem;
+    }
+
+    .music-subtitle {
+      color: var(--muted);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+
+    .play-btn {
+      background: var(--primary);
+      border: none;
+      border-radius: 50%;
+      width: 50px;
+      height: 50px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto;
+      cursor: pointer;
+      transition: var(--transition);
+    }
+
+    .play-btn:hover {
+      transform: scale(1.1);
+    }
+
+    .play-btn i {
+      color: white;
+      font-size: 1.5rem;
+    }
+
+    footer {
+      margin-top: 2rem;
+      color: var(--muted);
+      font-size: 0.9rem;
+      text-align: center;
+    }
+
+    footer span {
+      color: var(--highlight);
+      font-weight: 600;
+    }
+  </style>
+</head>
+<body>
+  <img src="https://files.catbox.moe/lu3bqk.jpg" alt="Background" class="background-image">
+
+  <header class="header">
+    <div class="logo-container">
+      <img src="https://files.catbox.moe/lu3bqk.jpg" alt="NAPPIER Logo" class="logo-img" />
+      <div class="logo-text">NAPPIER-XMD</div>
+    </div>
+
+    <div class="battery-container">
+      <i class="fas fa-battery-full battery-icon" id="battery-icon"></i>
+      <span id="battery-level">--%</span>
+    </div>
+  </header>
+
+  <div class="main-content">
+    <div class="box">
+      <h2>PAIRING CODE</h2>
+      <h5>NAPPIER-XMD MULTI DEVICE</h5>
+      <p>Enter your WhatsApp number with country code</p>
+
+      <div class="input-container">
+        <input type="tel" id="number" placeholder="e.g. +254700000000" required pattern="[0-9+]{10,15}" />
+        <button id="submit">SUBMIT</button>
+      </div>
+
+      <div id="pair-result">
+        <p id="waiting-message" style="display: none;">Generating code...</p>
+      </div>
+
+      <button id="copy-code" onclick="copyCode()">COPY CODE</button>
+    </div>
+
+    <div class="music-player">
+      <h3>Vibes 🔊</h3>
+      <div class="music-title">Nappier Tune</div>
+      <div class="music-subtitle">By Kathara</div>
+      <button class="play-btn" onclick="togglePlay()">
+        <i class="fas fa-play" id="play-icon"></i>
+      </button>
+      <div class="music-subtitle">Stay Blessed 💫</div>
+      <audio id="audio1" src="https://files.catbox.moe/wdap4t.mp3" loop></audio>
+    </div>
+  </div>
+
+  <footer>
+    ⚡ Designed & Developed by <span>Kathara</span> ⚡
+  </footer>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+  <script>
+    const pairResult = document.getElementById("pair-result");
+    const submitBtn = document.getElementById("submit");
+    const numberInput = document.getElementById("number");
+    const copyCodeBtn = document.getElementById("copy-code");
+    const waitingMessage = document.getElementById("waiting-message");
+    const batteryLevel = document.getElementById("battery-level");
+    const batteryIcon = document.getElementById("battery-icon");
+
+    async function copyCode() {
+      const codeElement = pairResult.querySelector('span');
+      if (!codeElement) return;
+      const code = codeElement.textContent;
+      try {
+        await navigator.clipboard.writeText(code);
+        copyCodeBtn.innerText = "COPIED!";
+        setTimeout(() => (copyCodeBtn.innerText = "COPY CODE"), 2000);
+      } catch (err) {
+        console.error('Failed to copy:', err);
+      }
+    }
+
+    submitBtn.addEventListener("click", async (e) => {
+      e.preventDefault();
+      if (!numberInput.value) {
+        pairResult.innerHTML = '<p style="color:#ff5555">Enter your WhatsApp number</p>';
+        return;
+      }
+
+      const cleanNumber = numberInput.value.replace(/[^0-9]/g, "");
+      if (cleanNumber.length < 10) {
+        pairResult.innerHTML = '<p style="color:#ff5555">Invalid Number</p>';
+        return;
+      }
+
+      waitingMessage.style.display = "block";
+      pairResult.innerHTML = "";
+      copyCodeBtn.style.display = "none";
+
+      try {
+        const { data } = await axios(`/code?number=${cleanNumber}`);
+        const code = data.code || "Unavailable";
+        waitingMessage.style.display = "none";
+        pairResult.innerHTML = `
+          <p style="color:var(--highlight); font-weight:bold; font-size:1.2rem;">
+            CODE: <span style="color:white">${code}</span>
+          </p>`;
+        copyCodeBtn.style.display = "inline-block";
+      } catch {
+        waitingMessage.style.display = "none";
+        pairResult.innerHTML = '<p style="color:#ff5555">Error getting pairing code</p>';
+      }
+    });
+
+    // Music controls
+    const audio = document.getElementById('audio1');
+    const playIcon = document.getElementById('play-icon');
+    function togglePlay() {
+      if (audio.paused) {
+        audio.play();
+        playIcon.classList.replace('fa-play', 'fa-pause');
+      } else {
+        audio.pause();
+        playIcon.classList.replace('fa-pause', 'fa-play');
+      }
+    }
+
+    // Battery simulation
+    function updateBattery() {
+      const batteryPercent = Math.floor(Math.random() * 30) + 70;
+      batteryLevel.textContent = `${batteryPercent}%`;
+      let icon = 'fa-battery-full';
+      if (batteryPercent < 25) icon = 'fa-battery-quarter';
+      else if (batteryPercent < 50) icon = 'fa-battery-half';
+      else if (batteryPercent < 75) icon = 'fa-battery-three-quarters';
+      batteryIcon.className = `fas ${icon} battery-icon`;
+    }
+
+    window.addEventListener('load', () => {
+      updateBattery();
+      setInterval(updateBattery, 60000);
+    });
+  </script>
+</body>
+</html>

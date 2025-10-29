@@ -1,0 +1,23 @@
+{
+  "name": "nappier-session",
+  "description": "Web Session Generator for NAPPIER-XMD WhatsApp Bot",
+  "logo": "https://files.catbox.moe/8hjpys.png",
+  "repository": "https://github.com/nappier2/NAPPIER-MD.git",
+  "keywords": ["NAPPIER-XMD", "WhatsApp", "Session", "Bot", "Pairing"],
+  "success_url": "/",
+  "buildpacks": [
+    { "url": "https://github.com/heroku/heroku-buildpack-nodejs#latest" }
+  ],
+  "env": {
+    "PORT": {
+      "description": "Port for the web session generator (e.g. 3000, 4000, 5000).",
+      "value": "5000",
+      "required": false
+    },
+    "MESSAGE": {
+      "description": "Custom welcome message (optional). Leave blank for default greeting.",
+      "value": "",
+      "required": false
+    }
+  }
+}
